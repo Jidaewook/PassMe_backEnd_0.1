@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
         .then(items => {
             res.status(200).json({
                 message: 'Successful Get NCS',
-                count: item.length, 
+                count: items.length, 
                 results: items
             })
         })
