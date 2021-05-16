@@ -7,6 +7,7 @@ const app = express();
 require('./config/database');
 
 const ncsRouter = require('./routes/ncs');
+const psatRouter = require('./routes/psat');
 
 // Middleware
 app.use(morgan('dev'));
@@ -22,7 +23,7 @@ app.get("/", (req, res) => {
 
 // Router
 app.use("/ncs", ncsRouter);
-
+app.use("/psat", psatRouter)
 
 const PORT = process.env.PORT || 3000;
 
