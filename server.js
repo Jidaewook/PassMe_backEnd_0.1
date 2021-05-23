@@ -8,6 +8,7 @@ require('./config/database');
 
 const ncsRouter = require('./routes/ncs');
 const psatRouter = require('./routes/psat');
+const userRouter = require('./routes/user');
 
 // Middleware
 app.use(morgan('dev'));
@@ -23,7 +24,8 @@ app.get("/", (req, res) => {
 
 // Router
 app.use("/ncs", ncsRouter);
-app.use("/psat", psatRouter)
+app.use("/psat", psatRouter);
+app.use("/users", userRouter);
 
 const PORT = process.env.PORT || 3000;
 

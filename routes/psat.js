@@ -49,6 +49,22 @@ router.post('/', (req, res) => {
         });
 });
 
+router.get('/:psatModelId', (req, res) => {
+    psatModel
+        .findById(req.params.psatModelId)
+        .then(item => {
+            res.status(200).json({
+                message: 'Successful Get PSAT',
+                results: item
+            })
+        })
+        .catch(err => {
+            res.status(400).json({
+                error: err.message
+            });
+        });
+});
+
 router.patch('/', (req, res) => {
     res.json({
         msg: 'UPDATE PSAT'
