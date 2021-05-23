@@ -10,7 +10,7 @@ const ncsSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        genres: [String],
+        genres_ids: [String],
         rating: {
             type: Number
         },

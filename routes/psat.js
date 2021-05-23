@@ -29,8 +29,8 @@ router.post('/', (req, res) => {
     if(req.body.professor) psatFields.professor = req.body.professor;
     if(req.body.comment) psatFields.comment = req.body.comment;
     if(req.body.url) psatFields.url = req.body.url;
-    if(typeof req.body.genres !== 'undefined'){
-        psatFields.genres = req.body.genres.split(',')
+    if(typeof req.body.genres_ids !== 'undefined'){
+        psatFields.genres_ids = req.body.genres_ids.split(',')
     }
 
     const newPsat = new psatModel(psatFields);

@@ -10,7 +10,7 @@ const psatSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        geners: [String],
+        genres_ids: [String],
         rating: {
             type: Number
         },

@@ -30,8 +30,8 @@ router.post('/', (req, res) => {
     if(req.body.professor) ncsFields.professor = req.body.professor;
     if(req.body.comment) ncsFields.comment = req.body.comment;
     if(req.body.url) ncsFields.url = req.body.url;   
-    if(typeof req.body.genres !== 'undefined'){
-        ncsFields.genres = req.body.genres.split(',')
+    if(typeof req.body.genres_ids !== 'undefined'){
+        ncsFields.genres_ids = req.body.genres_ids.split(',')
     } 
 
     const newNcs = new ncsModel(ncsFields);
