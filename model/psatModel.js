@@ -26,6 +26,9 @@ const psatSchema = new mongoose.Schema(
         url: {
             type: String
         }
+    },
+    {
+        timestamps: true
     }
 );
 

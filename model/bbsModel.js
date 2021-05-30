@@ -12,15 +12,11 @@ const bbsSchema = new mongoose.Schema(
             required: true
         },
         category: {
-            type: String,
+            type: [String],
             required: true
-        },
+        }, 
         likes: [],
         comment: [],
-        createdAt: {
-            type: Date,
-            default: Date.now()
-        },
         tag: [String],
         attached: {
             type: String
@@ -28,8 +24,9 @@ const bbsSchema = new mongoose.Schema(
         url: {
             type: String
         }
-
-
+    },
+    {
+        timestamps: true
     }
 );
 
