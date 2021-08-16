@@ -27,7 +27,10 @@ router.post('/', (req, res) => {
     if(req.body.desc) noticeFields.desc = req.body.desc;
     if(req.body.rating) noticeFields.rating = req.body.rating;
     if(req.body.professor) noticeFields.professor = req.body.professor;
+    if(req.body.poster) noticeFields.poster = req.body.poster;
+    if(req.body.backdrop) noticeFields.backdrop = req.body.backdrop;
     if(req.body.comment) noticeFields.comment = req.body.comment;
+    if(req.body.like) noticeFields.like = req.body.like;
     if(req.body.url) noticeFields.url = req.body.url;   
     if(typeof req.body.genres_ids !== 'undefined'){
         noticeFields.genres_ids = req.body.genres_ids.split(',')

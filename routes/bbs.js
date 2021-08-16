@@ -27,6 +27,9 @@ router.post('/', (req, res) => {
     if(req.body.title) bbsFields.title = req.body.title;
     if(req.body.desc) bbsFields.desc = req.body.desc;
     if(req.body.url) bbsFields.url = req.body.url;
+    if(req.body.thumb) bbsFields.thumb = req.body.thumb;
+    if(req.body.like) bbsFields.like = req.body.like;
+    if(req.body.comment) bbsFields.comment = req.body.comment;
     if(typeof req.body.category !== 'undefined'){
         bbsFields.category = req.body.category
     }

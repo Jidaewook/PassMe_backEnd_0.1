@@ -3,7 +3,6 @@ const router = express.Router();
 
 const userModel = require('../model/userModel');
 
-const crypto = require('crypto');
 const bctypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 

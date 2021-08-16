@@ -23,6 +23,9 @@ const bbsSchema = new mongoose.Schema(
         },
         url: {
             type: String
+        }, 
+        thumb: {
+            type: String
         }
     },
     {

@@ -28,7 +28,10 @@ router.post('/', (req, res) => {
     if(req.body.rating) psatFields.rating = req.body.rating;
     if(req.body.professor) psatFields.professor = req.body.professor;
     if(req.body.comment) psatFields.comment = req.body.comment;
+    if(req.body.like) psatFields.like = req.body.like;
     if(req.body.url) psatFields.url = req.body.url;
+    if(req.body.poster) psatFields.poster = req.body.poster;
+    if(req.body.backdrop) psatFields.backdrop = req.body.backdrop;
     if(typeof req.body.genres_ids !== 'undefined'){
         psatFields.genres_ids = req.body.genres_ids.split(',')
     }

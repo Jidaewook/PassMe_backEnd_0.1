@@ -27,6 +27,11 @@ router.post('/', (req, res) => {
     if(req.body.title) ncsFields.title = req.body.title;
     if(req.body.desc) ncsFields.desc = req.body.desc;
     if(req.body.professor) ncsFields.professor = req.body.professor;
+    if(req.body.poster) ncsFields.poster = req.body.poster;
+    if(req.body.rating) ncsFields.rating = req.body.rating;
+    if(req.body.backdrop) ncsFields.backdrop = req.body.backdrop;
+    if(req.body.comment) ncsFields.comment = req.body.comment;
+    if(req.body.like) ncsFields.like = req.body.like;
     if(req.body.url) ncsFields.url = req.body.url;   
     if(typeof req.body.genres_ids !== 'undefined'){
         ncsFields.genres_ids = req.body.genres_ids.split(',')
