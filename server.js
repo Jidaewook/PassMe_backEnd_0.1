@@ -11,6 +11,8 @@ const psatRouter = require('./routes/psat');
 const userRouter = require('./routes/user');
 const noticeRouter = require('./routes/notice');
 const bbsRouter = require('./routes/bbs');
+const workbookRouter = require('./routes/workbook');
+
 
 // Middleware
 app.use(morgan('dev'));
@@ -30,6 +32,7 @@ app.use("/psat", psatRouter);
 app.use("/users", userRouter);
 app.use("/notice", noticeRouter);
 app.use("/bbs", bbsRouter);
+app.use("/workbook", workbookRouter);
 
 const PORT = process.env.PORT || 3000;
 
