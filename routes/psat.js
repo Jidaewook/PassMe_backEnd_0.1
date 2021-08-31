@@ -69,15 +69,32 @@ router.get('/:psatModelId', (req, res) => {
 });
 
 router.patch('/', (req, res) => {
-    res.json({
-        msg: 'UPDATE PSAT'
-    })
-});
+    psatModel
+        .findByIdAndUpdate(req.params.psatModelId)
+        .then()
+        .catch(err => {
+            res.status(400).json({
+                message: err.message
+            })
+        });
+});;
 
 router.delete('/', (req, res) => {
-    res.json({
-        msg: 'DELETE PSAT'
-    })
+    psatModel
+        .findByIdAndDelete(
+            {_id: req.params.psatModelId},
+            {$set: {title, desc, genres, rating, poster}}
+        )
+        .then(() => {
+            res.status(200).json({
+                message: 'Successful PSAT Delete'
+            })
+        })
+        .catch(err => {
+            res.status(400).json({
+                message: err.message
+            });
+        });
 });
 
 module.exports = router;
