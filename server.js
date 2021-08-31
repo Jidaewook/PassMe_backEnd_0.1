@@ -11,6 +11,7 @@ const psatRouter = require('./routes/psat');
 const userRouter = require('./routes/user');
 const noticeRouter = require('./routes/notice');
 const bbsRouter = require('./routes/bbs');
+const alarmRouter = require('./routes/alarm');
 // const workbookRouter = require('./routes/workbook');
 
 
@@ -32,6 +33,8 @@ app.use("/psat", psatRouter);
 app.use("/users", userRouter);
 app.use("/notice", noticeRouter);
 app.use("/bbs", bbsRouter);
+app.use("/alarm", alarmRouter);
+
 // app.use("/workbook", workbookRouter);
 
 const PORT = process.env.PORT || 3000;
