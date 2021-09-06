@@ -10,6 +10,9 @@ const workbookSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        answer: {
+
+        },
         genres_ids: [String],
         rating: {
             type: Number
