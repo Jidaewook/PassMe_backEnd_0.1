@@ -22,25 +22,12 @@ router.post('/register', (req, res) => {
                     error: 'Email already exists'
                 });
             }
-            const payload = { name, email, password };
-            const token = jwt.sign(
-                payload, 
-                "PASSME",
-                {expiresIn: '20m'}
-            ) 
-
-            const emailData = {
-                from: process.env.EMAIL_FROM,
-                to: email,
-                subject: 'PASSME NCS Account Activation Link',
-                html: `
-                <h1>Please use the following to activate your account</h1>
-                <p>${process.env.CLIENT_URL}/users/activate/${token}</p>
-                <hr />
-                <p>This email may containe sensetive information</p>
-                <p>${process.env.CLIENT_URL}</p>
-            `
-            };
+            const newUser = new userModel({
+                name, email, password
+            })
+            newUser.save().then(user => {
+                res.json(user)
+            })
         })
         .catch(err => {
             res.status(500).json({
