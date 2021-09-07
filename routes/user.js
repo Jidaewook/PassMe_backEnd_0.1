@@ -25,7 +25,7 @@ router.post('/register', (req, res) => {
             const payload = { name, email, password };
             const token = jwt.sign(
                 payload, 
-                process.env.JWT_ACCOUNT_ACTIVATION,
+                "PASSME",
                 {expiresIn: '20m'}
             ) 
 
