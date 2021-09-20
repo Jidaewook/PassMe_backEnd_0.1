@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
             default: 'user'
         },
         resetPasswordLink: {
-            data: String,
+            type: String,
             default: ""
         },
         source: {

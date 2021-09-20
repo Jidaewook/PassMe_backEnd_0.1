@@ -56,9 +56,16 @@ router.post('/login', (req, res) => {
                 }
                 const payload = { id: user._id, name: user.name, email: user.email, avatar: user.avatar};
 
+                const token = jwt.sign(
+                    payload,
+                    "psatdoctor",
+                    {expiresIn : '1d'}
+                )
+
+
                 res.status(200).json({
                     success: isMatch,
-                    token: tokenGenerator(payload)
+                    token
                 });
                 
             })
