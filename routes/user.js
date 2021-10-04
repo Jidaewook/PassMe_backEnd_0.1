@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
+const passport = require('passport');
+const authCheck = passport.authenticate('jwt', {session: false});
+
 const userModel = require('../model/userModel');
 
 const bctypt = require('bcryptjs');
@@ -72,10 +75,11 @@ router.post('/login', (req, res) => {
         });
 });
 
-router.get('/', (req, res) => {
-    res.json({
-        msg: 'DELETE PSAT'
-    })
+router.get('/userinfo', authCheck, (req, res) => {
+    res.json(req.user)
 });
+
+
+
 
 module.exports = router;

@@ -1,10 +1,13 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
+const passport = require('passport');
 const morgan = require('morgan');
 const cors = require('cors');
 const app = express();
 require('./config/database');
+
+const protect = require('./config/passport');
 
 const ncsRouter = require('./routes/ncs');
 const psatRouter = require('./routes/psat');
@@ -20,6 +23,11 @@ app.use(morgan('dev'));
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+
+app.use(passport.initialize())
+
+protect(passport)
+
 
 app.get("/", (req, res) => {
     res.json({

@@ -17,6 +17,12 @@ const userSchema = new mongoose.Schema(
         avatar: {
             type: String
         },
+        institue: {
+            type: String
+        },
+        area: {
+            type: String
+        },
         role: {
             type: String,
             default: 'user'
@@ -26,6 +32,12 @@ const userSchema = new mongoose.Schema(
             default: ""
         },
         source: {
+            type: String
+        },
+        loca: {
+            type: String
+        },
+        institution: {
             type: String
         }
     },

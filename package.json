@@ -28,6 +28,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.9",
     "morgan": "^1.10.0",
+    "passport": "^0.5.0",
+    "passport-jwt": "^4.0.0",
     "validator": "^13.6.0"
   },
   "devDependencies": {
