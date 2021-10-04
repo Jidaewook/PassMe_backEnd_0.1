@@ -33,12 +33,6 @@ const userSchema = new mongoose.Schema(
         },
         source: {
             type: String
-        },
-        loca: {
-            type: String
-        },
-        institution: {
-            type: String
         }
     },
     {
