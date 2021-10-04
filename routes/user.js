@@ -15,7 +15,7 @@ const jwt = require('jsonwebtoken');
 // @access public 
 
 router.post('/register', (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, institue, area, introduce } = req.body;
     
     userModel
         .findOne({email})
@@ -26,7 +26,7 @@ router.post('/register', (req, res) => {
                 });
             }
             const newUser = new userModel({
-                name, email, password
+                name, email, password, institue, area, introduce
             })
             newUser.save().then(user => {
                 res.json(user)
@@ -57,7 +57,15 @@ router.post('/login', (req, res) => {
                         err: "wrong password"
                     });
                 }
-                const payload = { id: user._id, name: user.name, email: user.email, avatar: user.avatar};
+                const payload = { 
+                    id: user._id, 
+                    name: user.name, 
+                    email: user.email, 
+                    avatar: user.avatar, 
+                    institue: user.institue, 
+                    area: user.area,
+                    introduce: user.introduce
+                };
 
                 const token = jwt.sign(
                     payload,

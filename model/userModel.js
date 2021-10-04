@@ -18,10 +18,16 @@ const userSchema = new mongoose.Schema(
             type: String
         },
         institue: {
-            type: String
+            type: String,
+            default: ''
+        },
+        introduce: {
+            type: String,
+            default: ''
         },
         area: {
-            type: String
+            type: String,
+            default: ''
         },
         role: {
             type: String,
