@@ -7,6 +7,7 @@ const workbookModel = require('../model/workbookModel');
 router.get('/', (req, res) => {
     workbookModel
         .find()
+        .sort({createdAt: -1})
         .then(items => {
             res.status(200).json({
                 message: 'Successful Get WORKBook',

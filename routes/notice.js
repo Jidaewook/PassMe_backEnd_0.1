@@ -6,6 +6,7 @@ const noticeModel = require('../model/noticeModel');
 router.get('/', (req, res) => {
     noticeModel
         .find()
+        .sort({createdAt: -1})
         .then(items => {
             res.status(200).json({
                 message: 'Successful Get Notice',

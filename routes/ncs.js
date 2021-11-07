@@ -7,6 +7,7 @@ const ncsModel = require('../model/ncsModel');
 router.get('/', (req, res) => {
     ncsModel
         .find()
+        .sort({createdAt: -1})
         .then(items => {
             res.status(200).json({
                 message: 'Successful Get NCS',

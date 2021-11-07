@@ -7,6 +7,7 @@ const bbsModel = require('../model/bbsModel');
 router.get('/', (req, res) => {
     bbsModel
         .find()
+        .sort({createdAt: -1})
         .then(items => {
             res.status(200).json({
                 message: 'Successful GET BBS',

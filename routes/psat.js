@@ -6,6 +6,7 @@ const psatModel = require('../model/psatModel');
 router.get('/', (req, res) => {
     psatModel
         .find()
+        .sort({createdAt: -1})
         .then(items => {
             res.status(200).json({
                 message: 'Successful Get PSAT',

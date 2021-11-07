@@ -6,6 +6,7 @@ const alarmModel = require('../model/alarmModel');
 router.get('/', (req, res) => {
     alarmModel
         .find()
+        .sort({createdAt: -1})
         .then(items => {
             res.status(200).json({
                 message: 'Successful Get Alarm',
