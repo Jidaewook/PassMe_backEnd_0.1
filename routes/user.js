@@ -83,6 +83,36 @@ router.post('/login', (req, res) => {
         });
 });
 
+router.put('/:id', authCheck, (req, res) => {
+    const userInputFields = {};
+    if(req.body.name) userInputFields.name = req.body.name;
+    if(req.body.institue) userInputFields.institue = req.body.institue;
+    if(req.body.introduce) userInputFields.introduce = req.body.introduce;
+    if(req.body.area) userInputFields.area = req.body.area;
+    
+    userModel   
+        .findById(req.params.id)
+        .then(user => {
+            userModel
+            .findOneAndUpdate(
+                {_id: req.params.id},
+                {$set: userInputFields},
+                {new: true}
+            ) 
+            .then(user => {
+                res.json(user)
+            })
+            
+        })
+        .catch(err => {
+            res.status(404).json({
+                msg: err.message
+            })
+        })
+})
+
+
+
 router.get('/userinfo', authCheck, (req, res) => {
     res.json(req.user)
 });
