@@ -1,6 +1,9 @@
 
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
+const authCheck = passport.authenticate('jwt', {session: false});
+
 
 const ncsModel = require('../model/ncsModel');
 
@@ -70,6 +73,7 @@ router.get('/:ncsModelId', (req, res) => {
         });
 });
 
+
 router.patch('/', (req, res) => {
     ncsModel
         .findByIdAndUpdate(req.params.ncsModelId)
@@ -99,7 +103,52 @@ router.delete('/', (req, res) => {
         });
 });
 
+// @Comment Register
+router.post('/comment/:ncsId', authCheck, (req, res) => {
+    ncsModel
+        .findById(req.params.ncsId)
+        .then(ncs => {
+            const newComment = {
+                name: req.user.name, 
+                text: req.body.text,
+                avatar: req.user.avatar,
+                user: req.user._id
+            }
+            ncs.comment.unshift(newComment);
+            ncs.save().then(ncs => res.json(ncs));
+        })
+        .catch(err => {
+            res.status(404).json({
+                msg: err.message
+            })
+        })
+        
+})
 
+// @Delete Comment
+router.delete('/comment/:ncsId/:commentId', authCheck, (req, res) => {
+    ncsModel
+        .findById(req.params.ncsId)
+        .then(ncs => {
+            if (ncs.comment.filter(c => c._id.toString() === req.params.commentId).length === 0) {
+                return res.status(400).json({
+                    msg: 'Comment does not exist'
+                })
+            }
+            const removeIndex = ncs.comment
+                .map(item => item._id.toString())
+                .indexOf(req.params.commentId);
+            
+            // splice comment out of array
+            ncs.comment.splice(removeIndex, 1);
+            ncs.save().then(ncs => res.json(ncs));
+        })
+        .catch(err => {
+            res.status(404).json({
+                msg: err.message
+            })
+        })
+})
 
 
 module.exports = router;

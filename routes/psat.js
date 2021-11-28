@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
+const authCheck = passport.authenticate('jwt', {session: false});
 
 const psatModel = require('../model/psatModel');
 
@@ -97,5 +99,53 @@ router.delete('/', (req, res) => {
             });
         });
 });
+
+// @Register Comment
+router.post('/comment/:psatId', authCheck, (req, res) => {
+    psatModel
+        .findById(req.params.psatId)
+        .then(psat => {
+            const newComment = {
+                name: req.user.name,
+                avatar: req.user.avatar,
+                user: req.user._id,
+                text: req.body.text
+            }
+            psat.comment.unshift(newComment);
+            psat.save().then(psat => res.json(psat));
+        })
+        .catch(err => {
+            res.status(404).json({
+                msg: err.message
+            })
+        })
+})
+
+// Delete Comment
+router.delete('/comment/:psatId/:commentId', authCheck, (req, res) => {
+    psatModel
+        .findById(req.params.psatId)
+        .then(psat => {
+            if (psat.comment.filter(c => c._id.toString() === req.params.commentId).length === 0) {
+                return res.status(400).json({
+                    msg: 'Comment does not exist'
+                })
+            } else {
+                const removeIndex = psat.comment
+                .map(item => item._id.toString())
+                .indexOf(req.params.commentId)
+
+                psat.comment.splice(removeIndex, 1);
+                psat.save().then(psat => res.json(psat));
+            }
+            
+        })
+        .catch(err => {
+            res.status(400).json({
+                msg: err.message
+            })
+        })
+})
+
 
 module.exports = router;

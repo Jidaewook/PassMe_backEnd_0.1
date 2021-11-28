@@ -51,6 +51,7 @@ userSchema.pre('save', async function (next){
         console.log('entered');
 
         const avatar = await gravatar.url(this.email, {
+            protocol: "https",
             s: '200',
             r: 'pg',
             d: 'mm'

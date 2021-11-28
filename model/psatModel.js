@@ -21,7 +21,28 @@ const psatSchema = new mongoose.Schema(
             type: String
         },
         professor: {},
-        comment: [],
+        comment: [
+            {
+                user: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'user'
+                },
+                text: {
+                    type: String,
+                    required: true
+                },
+                name: {
+                    type: String
+                },
+                avatar: {
+                    type: String
+                },
+                date: {
+                    type: Date,
+                    default: Date.now
+                }
+            }
+        ],
         like: [],
         url: {
             type: String
