@@ -40,10 +40,29 @@ const ncsSchema = new mongoose.Schema(
                 date: {
                     type: Date,
                     default: Date.now
-                }
+                }, 
+                like: [
+                    {
+                        user: {
+                            type: mongoose.Schema.Types.ObjectId,
+                            ref: 'user'
+                        },
+                        date: {
+                            type: Date,
+                            default: Date.now
+                        }  
+                    }
+                ]
             }
         ],
-        like: [],
+        likes: [
+            {
+                user: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'user'
+                },
+            }
+        ],
         url: {
             type: String
         }

@@ -6,6 +6,7 @@ const authCheck = passport.authenticate('jwt', {session: false});
 
 
 const ncsModel = require('../model/ncsModel');
+const userModel = require('../model/userModel')
 
 router.get('/', (req, res) => {
     ncsModel
@@ -127,21 +128,94 @@ router.post('/comment/:ncsId', authCheck, (req, res) => {
 
 // @Delete Comment
 router.delete('/comment/:ncsId/:commentId', authCheck, (req, res) => {
-    ncsModel
-        .findById(req.params.ncsId)
-        .then(ncs => {
-            if (ncs.comment.filter(c => c._id.toString() === req.params.commentId).length === 0) {
-                return res.status(400).json({
-                    msg: 'Comment does not exist'
+    userModel
+        .findById(req.user.id)
+        .then(user => {
+            ncsModel
+            .findById(req.params.ncsId)
+            .then(ncs => {
+                if (ncs.comment.filter(c => c._id.toString() === req.params.commentId).length === 0) {
+                    return res.status(400).json({
+                        msg: 'Comment does not exist'
+                    })
+                }
+                const removeIndex = ncs.comment
+                    .map(item => item._id.toString())
+                    .indexOf(req.params.commentId);
+                
+                // splice comment out of array
+                ncs.comment.splice(removeIndex, 1);
+                ncs.save().then(ncs => res.json(ncs));
+            })
+            .catch(err => {
+                res.status(404).json({
+                    msg: err.message
                 })
-            }
-            const removeIndex = ncs.comment
-                .map(item => item._id.toString())
-                .indexOf(req.params.commentId);
+            })
+        })
+        .catch(err => {
+            res.status(404).json({
+                msg: err.message
+            })
+        })
+    
+    // userModel
+    //     .findById(req.user.id)
+    //     .then(user => {
+    //         ncsModel
+    //             .findById(req.params.ncsId)
+    //             .then(ncs => {
+    //                 if(ncs.comment.filter(c => c._id.toString() === req.params.commendId).length === 0){
+    //                     return res.status(401).json({
+    //                         msg: 'Not Comment this post yet'
+    //                     })
+    //                 }
+    //                 const removeIndex = ncs.comment
+    //                 .map(item => item._id.toString())
+    //                 .indexOf(req.params.commentId)
+
+    //                 ncs.comment.splice(removeIndex, 1)
+    //                 ncs.save().then(ncs => res.json(ncs))
             
-            // splice comment out of array
-            ncs.comment.splice(removeIndex, 1);
-            ncs.save().then(ncs => res.json(ncs));
+    //             })
+    //             .catch(err => {
+    //                 res.status(400).json({
+    //                     msg: err.message
+    //                 })
+    //             })
+    //     })
+    //     .catch(err => {
+    //         res.status(404).json({
+    //             msg: err.message
+    //         })
+    //     })
+})
+
+//  @Register Like
+router.post('/likes/:ncsId', authCheck, (req, res) => {
+    
+    userModel
+        .findById(req.user.id)
+        .then(user => {
+            console.log('!!!!!!!!!!!!!!!!', user)
+            ncsModel
+                .findById(req.params.ncsId)
+                .then(ncs => {
+                    console.log('++++++++', ncs.likes.filter(l => l.user.toString() === user.id).length > 0)
+                    if(ncs.likes.filter(l => l.user.toString() === user.id).length > 0) {
+                        return res.status(400).json({
+                            msg: 'Already Liked this post'
+                        })
+                    }
+                    // Add user id to likes array
+                    ncs.likes.unshift({ user: req.user.id });
+                    ncs.save().then(ncs => res.json(ncs));
+                })
+                .catch(err => {
+                    res.status(400).json({
+                        msg: `No NCS By ${ncsId}`
+                    })
+                })
         })
         .catch(err => {
             res.status(404).json({
@@ -150,5 +224,40 @@ router.delete('/comment/:ncsId/:commentId', authCheck, (req, res) => {
         })
 })
 
+
+// @Delete Like
+router.post('/unlikes/:ncsId', authCheck, (req, res) => {
+    userModel
+        .findById(req.user.id)
+        .then(user => {
+            ncsModel
+                .findById(req.params.ncsId)
+                .then(ncs => {
+                    if(ncs.likes.filter(l => l.user.toString() === user.id).length === 0){
+                        return res.status(401).json({
+                            msg: 'Not liked this post yet'
+                        })
+                    }
+                    const removeIndex = ncs.likes
+                    .map(item => item.user.toString())
+                    .indexOf(req.user.id)
+
+                    ncs.likes.splice(removeIndex, 1)
+                    ncs.save().then(ncs => res.json(ncs))
+            
+                })
+                .catch(err => {
+                    res.status(400).json({
+                        msg: 'No Post'
+                    })
+                })
+        })
+        .catch(err => {
+            res.status(404).json({
+                msg: err.message
+            })
+        })
+        
+})
 
 module.exports = router;

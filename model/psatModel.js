@@ -43,7 +43,14 @@ const psatSchema = new mongoose.Schema(
                 }
             }
         ],
-        like: [],
+        likes: [
+            {
+                user: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'user'
+                },
+            }
+        ],
         url: {
             type: String
         }

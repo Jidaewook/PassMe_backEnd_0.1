@@ -4,6 +4,7 @@ const passport = require('passport');
 const authCheck = passport.authenticate('jwt', {session: false});
 
 const psatModel = require('../model/psatModel');
+const userModel = require('../model/userModel')
 
 router.get('/', (req, res) => {
     psatModel
@@ -123,29 +124,107 @@ router.post('/comment/:psatId', authCheck, (req, res) => {
 
 // Delete Comment
 router.delete('/comment/:psatId/:commentId', authCheck, (req, res) => {
-    psatModel
-        .findById(req.params.psatId)
-        .then(psat => {
-            if (psat.comment.filter(c => c._id.toString() === req.params.commentId).length === 0) {
-                return res.status(400).json({
-                    msg: 'Comment does not exist'
+    userModel
+        .findById(req.params.id)
+        .then(user => {
+            psatModel
+                .findById(req.params.psatId)
+                .then(psat => {
+                    if (psat.comment.filter(c => c._id.toString() === req.params.commentId).length === 0) {
+                        return res.status(400).json({
+                            msg: 'Comment does not exist'
+                        })
+                    } else {
+                        const removeIndex = psat.comment
+                        .map(item => item._id.toString())
+                        .indexOf(req.params.commentId)
+        
+                        psat.comment.splice(removeIndex, 1);
+                        psat.save().then(psat => res.json(psat));
+                    }
+                    
+            })
+            .catch(err => {
+                res.status(400).json({
+                    msg: err.message
                 })
-            } else {
-                const removeIndex = psat.comment
-                .map(item => item._id.toString())
-                .indexOf(req.params.commentId)
-
-                psat.comment.splice(removeIndex, 1);
-                psat.save().then(psat => res.json(psat));
-            }
-            
+            })
         })
         .catch(err => {
-            res.status(400).json({
+            res.status(404).json({
+                msg: err.message
+            })
+        })
+    
+})
+
+//  @Register Like
+router.post('/likes/:psatId', authCheck, (req, res) => {
+    
+    userModel
+        .findById(req.user.id)
+        .then(user => {
+            console.log('!!!!!!!!!!!!!!!!', user)
+            psatModel
+                .findById(req.params.psatId)
+                .then(psat => {
+                    console.log('++++++++', psat.likes.filter(l => l.user.toString() === user.id).length > 0)
+                    if(psat.likes.filter(l => l.user.toString() === user.id).length > 0) {
+                        return res.status(400).json({
+                            msg: 'Already Liked this post'
+                        })
+                    }
+                    // Add user id to likes array
+                    psat.likes.unshift({ user: req.user.id });
+                    psat.save().then(psat => res.json(psat));
+                })
+                .catch(err => {
+                    res.status(400).json({
+                        msg: `No PSAT By ${psatId}`
+                    })
+                })
+        })
+        .catch(err => {
+            res.status(404).json({
                 msg: err.message
             })
         })
 })
 
+
+// @Delete Like
+router.post('/unlikes/:psatId', authCheck, (req, res) => {
+    userModel
+        .findById(req.user.id)
+        .then(user => {
+            psatModel
+                .findById(req.params.psatId)
+                .then(psat => {
+                    if(psat.likes.filter(l => l.user.toString() === user.id).length === 0){
+                        return res.status(401).json({
+                            msg: 'Not liked this post yet'
+                        })
+                    }
+                    const removeIndex = psat.likes
+                    .map(item => item.user.toString())
+                    .indexOf(req.user.id)
+
+                    psat.likes.splice(removeIndex, 1)
+                    psat.save().then(psat => res.json(psat))
+            
+                })
+                .catch(err => {
+                    res.status(400).json({
+                        msg: 'No Post'
+                    })
+                })
+        })
+        .catch(err => {
+            res.status(404).json({
+                msg: err.message
+            })
+        })
+        
+})
 
 module.exports = router;
