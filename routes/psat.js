@@ -125,14 +125,14 @@ router.post('/comment/:psatId', authCheck, (req, res) => {
 // Delete Comment
 router.delete('/comment/:psatId/:commentId', authCheck, (req, res) => {
     userModel
-        .findById(req.params.id)
+        .findById(req.user.id)
         .then(user => {
             psatModel
                 .findById(req.params.psatId)
                 .then(psat => {
-                    if (psat.comment.filter(c => c._id.toString() === req.params.commentId).length === 0) {
+                    if (psat.comment.filter(c => c.user.toString() === req.user.id).length === 0) {
                         return res.status(400).json({
-                            msg: 'Comment does not exist'
+                            msg: 'Not Authorization'
                         })
                     } else {
                         const removeIndex = psat.comment
