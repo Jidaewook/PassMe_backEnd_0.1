@@ -117,6 +117,19 @@ router.get('/userinfo', authCheck, (req, res) => {
     res.json(req.user)
 });
 
+router.get('/', (req, res) => {
+    userModel
+        .find()
+        .then(users => {
+            res.json(users)
+        })
+        .catch(err => {
+            res.status(500).json({
+                msg: err.message
+            })
+        })
+})
+
 
 
 

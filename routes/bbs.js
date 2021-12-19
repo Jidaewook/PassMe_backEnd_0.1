@@ -1,8 +1,11 @@
-const { response } = require('express');
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
+const authCheck = passport.authenticate('jwt', {session: false});
 
 const bbsModel = require('../model/bbsModel');
+const userModel = require('../model/userModel')
+
 
 router.get('/', (req, res) => {
     bbsModel
@@ -98,6 +101,60 @@ router.delete('/', (req, res) => {
             })
         });
 });
+
+// @Comment Register
+router.post('/comment/:bbsId', authCheck, (req, res) => {
+    bbsModel   
+        .findById(req.params.bbsId)
+        .then(bbs => {
+            const newComment = {
+                name: req.user.name,
+                text: req.body.text,
+                avatar: req.user.avatar,
+                user: req.user._id
+            }
+            bbs.comment.unshift(newComment);
+            bbs.save().then(bbs => req.json(bbs));
+        })
+        .catch(err => {
+            res.status(404).json({
+                msg: err.message
+            })
+        })
+    })
+
+// @Comment Delete
+router.delete('/comment/:bbsId/:commentId', authCheck, (req, res) => {
+    userModel
+        .findById(req.user.id)
+        .then(user => {
+            bbsModel
+                .findById(req.params.bbsId)
+                .then(bbs => {
+                    if (bbs.comment.fileter(c => c.user.toString() === req.user.id).length === 0) {
+                        return res.status(400).json({
+                            msg: 'Not Authorization'
+                        })
+                    }
+                    const removeIndex = bbs.comment
+                        .map(item => item._id.toString())
+                        .indexOf(req.params.commentId);
+
+                        bbs.comment.splice(removeIndex, 1);
+                        bbs.save().then(bbs => res.json(bbs));
+                })
+                .catch(err => {
+                    res.status(404).json({
+                        msg: err.messsage
+                    })
+                })
+        })
+        .catch(err => {
+            res.status(404).json({
+                msg: err.message
+            })
+        })
+})
 
 
 
