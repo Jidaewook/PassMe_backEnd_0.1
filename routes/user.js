@@ -130,6 +130,19 @@ router.get('/', (req, res) => {
         })
 })
 
+router.get('/:id', (req, res) => {
+    userModel
+        .findById(req.params.id)
+        .then(user => {
+            res.json(user)
+        })
+        .catch(err => {
+            res.status(500).json({
+                msg: err.message
+            })
+        })
+})
+
 
 
 
