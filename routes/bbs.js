@@ -140,8 +140,8 @@ router.delete('/comment/:bbsId/:commentId', authCheck, (req, res) => {
                         .map(item => item._id.toString())
                         .indexOf(req.params.commentId);
 
-                        bbs.comment.splice(removeIndex, 1);
-                        bbs.save().then(bbs => res.json(bbs));
+                    bbs.comment.splice(removeIndex, 1);
+                    bbs.save().then(bbs => res.json(bbs));
                 })
                 .catch(err => {
                     res.status(404).json({
