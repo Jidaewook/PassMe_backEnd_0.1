@@ -86,6 +86,39 @@ router.patch('/', (req, res) => {
         })
 })
 
+router.put('/:id', (req, res) => {
+    const ncsInputFields = {};
+    if(req.body.title) ncsInputFields.title = req.body.title;
+    if(req.body.desc) ncsInputFields.desc = req.body.desc;
+    if(req.body.url) ncsInputFields.url = req.body.url;
+    if(req.body.poster) ncsInputFields.poster = req.body.poster;
+    if(req.body.backdrop) ncsInputFields.backdrop = req.body.backdrop;
+    if(typeof req.body.genres_ids !== 'undefined'){
+        ncsInputFields.genres_ids = req.body.genres_ids.split(',')
+    } 
+
+
+
+    ncsModel
+        .findById(req.params.id)
+        .then(ncs => {
+            ncsModel
+            .findOneAndUpdate(
+                {_id: req.params.id},
+                {$set: ncsInputFields},
+                {new: true}
+            )
+            .then(ncs => {
+                res.json(ncs)
+            })
+        })
+        .catch(err => {
+            res.status(404).json({
+                msg: err.message
+            })
+        })
+})
+
 router.delete('/', (req, res) => {
     ncsModel
         .findByIdAndDelete(

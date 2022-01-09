@@ -83,13 +83,14 @@ router.post('/login', (req, res) => {
         });
 });
 
-router.put('/:id', authCheck, (req, res) => {
+router.put('/:id', (req, res) => {
     const userInputFields = {};
     if(req.body.name) userInputFields.name = req.body.name;
     if(req.body.institue) userInputFields.institue = req.body.institue;
     if(req.body.introduce) userInputFields.introduce = req.body.introduce;
     if(req.body.area) userInputFields.area = req.body.area;
-    
+    if(req.body.role) userInputFields.role = req.body.role;
+
     userModel   
         .findById(req.params.id)
         .then(user => {
@@ -143,6 +144,23 @@ router.get('/:id', (req, res) => {
         })
 })
 
+router.delete('/:id', authCheck, (req, res) => {
+    userModel
+        .findByIdAndDelete(
+            {_id: req.params.userModelId},
+            // {$set: {email, password, avatar, role, institue, introduce, area}}
+        )
+        .then(() => {
+            res.status(200).json({
+                message: 'Succeful USER Delete'
+            })
+        })
+        .catch(err => {
+            res.status(400).json({
+                message: err.message
+            })
+        })
+})
 
 
 
