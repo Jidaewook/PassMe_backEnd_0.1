@@ -146,14 +146,9 @@ router.get('/:id', (req, res) => {
 
 router.delete('/:id', authCheck, (req, res) => {
     userModel
-        .findByIdAndDelete(
-            {_id: req.params.userModelId},
-            // {$set: {email, password, avatar, role, institue, introduce, area}}
-        )
+        .findByIdAndDelete(req.params.id)
         .then(() => {
-            res.status(200).json({
-                message: 'Succeful USER Delete'
-            })
+            res.json(true)
         })
         .catch(err => {
             res.status(400).json({

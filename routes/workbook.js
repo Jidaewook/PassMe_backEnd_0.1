@@ -81,22 +81,17 @@ router.patch('/', (req, res) => {
         })
 })
 
-router.delete('/', (req, res) => {
+router.delete('/:id', (req, res) => {
     workbookModel
-        .findByIdAndDelete(
-            {_id: req.params.workbookModelId},
-            {$set: {title, desc, genres_ids, rating, poster}}
-        )
+        .findByIdAndDelete(req.params.id)
         .then(() => {
-            res.status(200).json({
-                message: 'Successful Workbook Delete'
-            })
+            res.json(true)
         })
         .catch(err => {
             res.status(400).json({
                 message: err.message
-            });
-        });
+            })
+        })
 });
 
 

@@ -83,22 +83,17 @@ router.patch('/', (req, res) => {
         });
 });;
 
-router.delete('/', (req, res) => {
+router.delete('/:id', (req, res) => {
     psatModel
-        .findByIdAndDelete(
-            {_id: req.params.psatModelId},
-            {$set: {title, desc, genres, rating, poster}}
-        )
+        .findByIdAndDelete(req.params.id)
         .then(() => {
-            res.status(200).json({
-                message: 'Successful PSAT Delete'
-            })
+            res.json(true)
         })
         .catch(err => {
             res.status(400).json({
                 message: err.message
-            });
-        });
+            })
+        })
 });
 
 // @Register Comment

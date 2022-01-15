@@ -69,22 +69,17 @@ router.get('/:noticeModelId', (req, res) => {
         });
 });
 
-router.delete('/', (req, res) => {
+router.delete('/:id', (req, res) => {
     noticeModel
-        .findByIdAndDelete(
-            {_id: req.params.noticeModelId},
-            {$set: {title, desc, genres, rating, poster}}
-        )
+        .findByIdAndDelete(req.params.id)
         .then(() => {
-            res.status(200).json({
-                message: 'Successful NOTICE Delete'
-            })
+            res.json(true)
         })
         .catch(err => {
             res.status(400).json({
                 message: err.message
-            });
-        });
+            })
+        })
 });
 
 router.patch('/', (req, res) => {

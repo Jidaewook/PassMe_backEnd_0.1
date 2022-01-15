@@ -119,23 +119,18 @@ router.put('/:id', (req, res) => {
         })
 })
 
-router.delete('/', (req, res) => {
+router.delete('/:id', (req, res) => {
     ncsModel
-        .findByIdAndDelete(
-            {_id: req.params.ncsModelId},
-            {$set: {title, desc, genres_ids, rating, poster}}
-        )
+        .findByIdAndDelete(req.params.id)
         .then(() => {
-            res.status(200).json({
-                message: 'Successful NCS Delete'
-            })
+            res.json(true)
         })
         .catch(err => {
             res.status(400).json({
                 message: err.message
-            });
-        });
-});
+            })
+        })
+})
 
 // @Comment Register
 router.post('/comment/:ncsId', authCheck, (req, res) => {
