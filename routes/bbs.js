@@ -84,23 +84,19 @@ router.patch('/', (req, res) => {
         });
 });
 
-router.delete('/', (req, res) => {
+router.delete('/:id', (req, res) => {
     bbsModel
-        .findByIdAndDelete(
-            {_id: req.params.bbsModelId},
-            {$set: {title, desc, url, category, tag}}
-        )
+        .findByIdAndDelete(req.params.id)
         .then(() => {
-            res.status(200).json({
-                message: 'Successful BBS DELETE'
-            })
+            res.json(true)
         })
         .catch(err => {
             res.status(400).json({
                 message: err.message
             })
-        });
+        })
 });
+
 
 // @Comment Register
 router.post('/comment/:bbsId', authCheck, (req, res) => {
