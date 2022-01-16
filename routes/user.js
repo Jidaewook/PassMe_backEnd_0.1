@@ -144,7 +144,7 @@ router.get('/:id', (req, res) => {
         })
 })
 
-router.delete('/:id', authCheck, (req, res) => {
+router.delete('/:id', (req, res) => {
     userModel
         .findByIdAndDelete(req.params.id)
         .then(() => {
